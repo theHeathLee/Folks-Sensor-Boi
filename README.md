@@ -35,7 +35,7 @@ Designed for JLCPCB fabrication and SMT assembly.
 ## Schematic
 
 <!-- schematic-start -->
-_Generated automatically by CI — will appear after first push._
+![Schematic](docs/schematic.svg)
 <!-- schematic-end -->
 
 ---
@@ -74,7 +74,7 @@ _Generated automatically by CI — will appear after first push._
 ## BOM
 
 <!-- bom-start -->
-_Generated automatically by CI — will appear after first push._
+[Interactive BOM](docs/bom.html) — download and open locally for the interactive view.
 <!-- bom-end -->
 
 Full BOM with LCSC part numbers, stock status, unit costs, and placement tracking is in [`engine_sensor_box_BOM.xlsx`](engine_sensor_box_BOM.xlsx).
