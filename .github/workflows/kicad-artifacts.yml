@@ -24,6 +24,7 @@ jobs:
           config: .kibot/config.kibot.yaml
           schema: hardware/Sensor-Boi.kicad_sch
           board: hardware/Sensor-Boi.kicad_pcb
+          verbose: 3
 
       - name: Update README with schematic and BOM links
         run: |

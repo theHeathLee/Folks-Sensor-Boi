@@ -17,4 +17,3 @@ outputs:
       output: bom.html
       dark_mode: false
       show_fabrication: true
-      show_silkscreen: true
