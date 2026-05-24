@@ -9,10 +9,15 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   generate:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,8 +31,7 @@ jobs:
           board: hardware/Sensor-Boi.kicad_pcb
           targets: schematic_svg
 
-      # iBOM requires a board outline on Edge.Cuts. Until one is drawn in KiCad this step
-      # will fail gracefully rather than blocking the schematic SVG commit.
+      # iBOM requires an Edge.Cuts board outline — continues without blocking if missing.
       - name: Generate interactive BOM
         uses: INTI-CMNB/KiBot@v2_dk10
         continue-on-error: true
@@ -37,11 +41,46 @@ jobs:
           board: hardware/Sensor-Boi.kicad_pcb
           targets: interactive_bom
 
-      - name: Update README with schematic and BOM links
+      - name: Screenshot interactive BOM
+        if: hashFiles('docs/bom.html') != ''
+        run: |
+          google-chrome --headless=new --no-sandbox --disable-gpu \
+            --window-size=1280,800 \
+            --screenshot=docs/bom-preview.png \
+            "file://$PWD/docs/bom.html"
+
+      - name: Create Pages landing page
+        run: |
+          mkdir -p docs
+          cat > docs/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Folks Sensor Boi</title>
+            <style>
+              body { font-family: system-ui, sans-serif; max-width: 640px; margin: 3rem auto; padding: 0 1.5rem; }
+              h1 { font-size: 1.5rem; }
+              a { color: #0969da; }
+            </style>
+          </head>
+          <body>
+            <h1>Folks Sensor Boi — Hardware</h1>
+            <ul>
+              <li><a href="bom.html">Interactive BOM</a></li>
+              <li><a href="schematic.svg">Schematic</a></li>
+            </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Update README
         run: |
           python3 - << 'PYEOF'
           import re, pathlib
 
+          pages_url = "https://theheathlee.github.io/Folks-Sensor-Boi"
           readme = pathlib.Path("README.md").read_text()
 
           schematic_block = (
@@ -50,33 +89,49 @@ jobs:
               "<!-- schematic-end -->"
           )
 
-          bom_block = (
-              "<!-- bom-start -->\n"
-              "[Interactive BOM](docs/bom.html) — download and open locally for the interactive view.\n"
-              "<!-- bom-end -->"
-          )
+          if pathlib.Path("docs/bom-preview.png").exists():
+              bom_block = (
+                  "<!-- bom-start -->\n"
+                  f"[![Interactive BOM]({pages_url}/bom-preview.png)]({pages_url}/bom.html)\n\n"
+                  f"[Open interactive BOM →]({pages_url}/bom.html)\n"
+                  "<!-- bom-end -->"
+              )
+          else:
+              bom_block = (
+                  "<!-- bom-start -->\n"
+                  f"[Interactive BOM (live)]({pages_url}/bom.html)\n"
+                  "<!-- bom-end -->"
+              )
 
           readme = re.sub(
               r"<!-- schematic-start -->.*?<!-- schematic-end -->",
-              schematic_block,
-              readme,
-              flags=re.DOTALL,
+              schematic_block, readme, flags=re.DOTALL,
           )
           readme = re.sub(
               r"<!-- bom-start -->.*?<!-- bom-end -->",
-              bom_block,
-              readme,
-              flags=re.DOTALL,
+              bom_block, readme, flags=re.DOTALL,
           )
 
           pathlib.Path("README.md").write_text(readme)
           PYEOF
 
-      - name: Commit generated artifacts
+      - name: Commit artifacts to main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/schematic.svg README.md 2>/dev/null || true
-          git add docs/bom.html 2>/dev/null || true
+          git add docs/bom-preview.png 2>/dev/null || true
           git diff --staged --quiet || git commit -m "ci: regenerate schematic and BOM [skip ci]"
           git push
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
