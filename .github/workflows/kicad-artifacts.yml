@@ -17,9 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # KiBot v2 + KiCad 10. If a newer tag exists (v2_k11, etc.) update accordingly.
+      # v2_k10's kicad10_auto_full:latest image is not yet published; v2_dk10 uses the :dev variant which is.
       - name: Generate schematic SVG and interactive BOM
-        uses: INTI-CMNB/KiBot@v2_k10
+        uses: INTI-CMNB/KiBot@v2_dk10
         with:
           config: .kibot/config.kibot.yaml
           schema: hardware/Sensor-Boi.kicad_sch
