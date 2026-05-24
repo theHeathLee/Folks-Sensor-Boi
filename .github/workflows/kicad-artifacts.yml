@@ -18,13 +18,24 @@ jobs:
         uses: actions/checkout@v4
 
       # v2_k10's kicad10_auto_full:latest image is not yet published; v2_dk10 uses the :dev variant which is.
-      - name: Generate schematic SVG and interactive BOM
+      - name: Generate schematic SVG
         uses: INTI-CMNB/KiBot@v2_dk10
         with:
           config: .kibot/config.kibot.yaml
           schema: hardware/Sensor-Boi.kicad_sch
           board: hardware/Sensor-Boi.kicad_pcb
-          verbose: 3
+          targets: schematic_svg
+
+      # iBOM requires a board outline on Edge.Cuts. Until one is drawn in KiCad this step
+      # will fail gracefully rather than blocking the schematic SVG commit.
+      - name: Generate interactive BOM
+        uses: INTI-CMNB/KiBot@v2_dk10
+        continue-on-error: true
+        with:
+          config: .kibot/config.kibot.yaml
+          schema: hardware/Sensor-Boi.kicad_sch
+          board: hardware/Sensor-Boi.kicad_pcb
+          targets: interactive_bom
 
       - name: Update README with schematic and BOM links
         run: |
