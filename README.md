@@ -74,7 +74,7 @@ Designed for JLCPCB fabrication and SMT assembly.
 ## BOM
 
 <!-- bom-start -->
-[Interactive BOM](docs/bom.html) — download and open locally for the interactive view.
+[Interactive BOM (live)](https://theheathlee.github.io/Folks-Sensor-Boi/bom.html)
 <!-- bom-end -->
 
 Full BOM with LCSC part numbers, stock status, unit costs, and placement tracking is in [`engine_sensor_box_BOM.xlsx`](engine_sensor_box_BOM.xlsx).
