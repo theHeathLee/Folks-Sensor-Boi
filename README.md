@@ -1,4 +1,4 @@
-# Engine Sensor Box
+# Folks Sensor Boi
 
 > Multi-sensor engine telemetry unit for gasoline vehicles. Collects six engine parameters and transmits them wirelessly to a companion app and over CAN bus.
 
