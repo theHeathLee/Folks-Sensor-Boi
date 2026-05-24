@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Excel lock files
+~$*.xlsx
+~$*.xls
+
+# KiCad lock files
+*.lck
+~*.kicad_pcb
+~*.kicad_sch
+~*.kicad_pro
+
+# KiCad autosave
+_autosave-*
+
+# KiCad local preferences (machine-specific layout/view state)
+*.kicad_prl
+
+# KiCad backups
+*-backups/
+
+# KiCad simulation output
+*.cir
+*.raw
+
+# Fabrication outputs (regenerate from KiCad)
+gerbers/
+fab/
