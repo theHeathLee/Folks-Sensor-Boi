@@ -1,0 +1,69 @@
+name: KiCad Artifacts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "hardware/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # KiBot v2 + KiCad 10. If a newer tag exists (v2_k11, etc.) update accordingly.
+      - name: Generate schematic SVG and interactive BOM
+        uses: INTI-CMNB/KiBot@v2_k10
+        with:
+          config: .kibot/config.kibot.yaml
+          schema: hardware/Sensor-Boi.kicad_sch
+          board: hardware/Sensor-Boi.kicad_pcb
+
+      - name: Update README with schematic and BOM links
+        run: |
+          python3 - << 'PYEOF'
+          import re, pathlib
+
+          readme = pathlib.Path("README.md").read_text()
+
+          schematic_block = (
+              "<!-- schematic-start -->\n"
+              "![Schematic](docs/schematic.svg)\n"
+              "<!-- schematic-end -->"
+          )
+
+          bom_block = (
+              "<!-- bom-start -->\n"
+              "[Interactive BOM](docs/bom.html) — download and open locally for the interactive view.\n"
+              "<!-- bom-end -->"
+          )
+
+          readme = re.sub(
+              r"<!-- schematic-start -->.*?<!-- schematic-end -->",
+              schematic_block,
+              readme,
+              flags=re.DOTALL,
+          )
+          readme = re.sub(
+              r"<!-- bom-start -->.*?<!-- bom-end -->",
+              bom_block,
+              readme,
+              flags=re.DOTALL,
+          )
+
+          pathlib.Path("README.md").write_text(readme)
+          PYEOF
+
+      - name: Commit generated artifacts
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "ci: regenerate schematic and BOM [skip ci]"
+          file_pattern: "docs/schematic.svg docs/bom.html README.md"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"

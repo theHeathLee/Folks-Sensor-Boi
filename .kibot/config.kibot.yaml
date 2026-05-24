@@ -1,0 +1,20 @@
+kibot:
+  version: 1
+
+outputs:
+  - name: schematic_svg
+    comment: "Schematic SVG for README"
+    type: svg_sch_print
+    dir: docs
+    options:
+      output: schematic.svg
+
+  - name: interactive_bom
+    comment: "Interactive HTML BOM"
+    type: ibom
+    dir: docs
+    options:
+      output: bom.html
+      dark_mode: false
+      show_fabrication: true
+      show_silkscreen: true

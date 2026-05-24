@@ -32,6 +32,14 @@ Designed for JLCPCB fabrication and SMT assembly.
 
 ---
 
+## Schematic
+
+<!-- schematic-start -->
+_Generated automatically by CI — will appear after first push._
+<!-- schematic-end -->
+
+---
+
 ## Hardware
 
 ### MCU
@@ -65,7 +73,11 @@ Designed for JLCPCB fabrication and SMT assembly.
 
 ## BOM
 
-Full BOM with LCSC part numbers, stock status, unit costs, and placement tracking is in [`docs/engine_sensor_box_BOM.xlsx`](docs/engine_sensor_box_BOM.xlsx).
+<!-- bom-start -->
+_Generated automatically by CI — will appear after first push._
+<!-- bom-end -->
+
+Full BOM with LCSC part numbers, stock status, unit costs, and placement tracking is in [`engine_sensor_box_BOM.xlsx`](engine_sensor_box_BOM.xlsx).
 
 
 ---
