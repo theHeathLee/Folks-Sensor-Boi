@@ -52,7 +52,12 @@ jobs:
       - name: Create Pages landing page
         run: |
           mkdir -p docs
-          cat > docs/index.html << 'EOF'
+          if [ -f docs/bom.html ]; then
+            BOM_LINK='<li><a href="bom.html">Interactive BOM</a></li>'
+          else
+            BOM_LINK='<li><em>Interactive BOM — add an Edge.Cuts outline in KiCad to generate</em></li>'
+          fi
+          cat > docs/index.html << HTMLEOF
           <!DOCTYPE html>
           <html lang="en">
           <head>
@@ -68,12 +73,12 @@ jobs:
           <body>
             <h1>Folks Sensor Boi — Hardware</h1>
             <ul>
-              <li><a href="bom.html">Interactive BOM</a></li>
+              ${BOM_LINK}
               <li><a href="schematic.svg">Schematic</a></li>
             </ul>
           </body>
           </html>
-          EOF
+          HTMLEOF
 
       - name: Update README
         run: |
@@ -96,10 +101,16 @@ jobs:
                   f"[Open interactive BOM →]({pages_url}/bom.html)\n"
                   "<!-- bom-end -->"
               )
-          else:
+          elif pathlib.Path("docs/bom.html").exists():
               bom_block = (
                   "<!-- bom-start -->\n"
                   f"[Interactive BOM (live)]({pages_url}/bom.html)\n"
+                  "<!-- bom-end -->"
+              )
+          else:
+              bom_block = (
+                  "<!-- bom-start -->\n"
+                  "_Interactive BOM — draw a board outline on Edge.Cuts in KiCad to generate._\n"
                   "<!-- bom-end -->"
               )
 
