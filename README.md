@@ -74,7 +74,9 @@ Designed for JLCPCB fabrication and SMT assembly.
 ## BOM
 
 <!-- bom-start -->
-_Interactive BOM — draw a board outline on Edge.Cuts in KiCad to generate._
+[![Interactive BOM](https://theheathlee.github.io/Folks-Sensor-Boi/bom-preview.png)](https://theheathlee.github.io/Folks-Sensor-Boi/bom.html)
+
+[Open interactive BOM →](https://theheathlee.github.io/Folks-Sensor-Boi/bom.html)
 <!-- bom-end -->
 
 Full BOM with LCSC part numbers, stock status, unit costs, and placement tracking is in [`engine_sensor_box_BOM.xlsx`](engine_sensor_box_BOM.xlsx).
