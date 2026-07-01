@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "project": "Sensor-Boi.kicad_pro",
+  "current": "2026-07-01_1604",
+  "runs": {
+    "2026-07-01_1556": {
+      "source_hashes": {
+        "Sensor-Boi.kicad_sch": "sha256:dbb2c1522d2a6b2b5334fe6b6c4a9e9f501993ab5b8fd7e60d81b1839fe00eda",
+        "Sensor-Boi.kicad_pcb": "sha256:db1396d1873ddd2c324f38a8b27cf895384ec3668c83c478fa3be1b8360e7f46"
+      },
+      "outputs": {
+        "schematic": "schematic.json",
+        "pcb": "pcb.json",
+        "cross_analysis": "cross_analysis.json"
+      },
+      "scripts": {
+        "schematic": "analyze_schematic.py Sensor-Boi.kicad_sch"
+      },
+      "generated": "2026-07-01T15:57:48+02:00",
+      "pinned": false
+    },
+    "2026-07-01_1604": {
+      "source_hashes": {
+        "Sensor-Boi.kicad_sch": "sha256:0e79effc943c04550f38cfdc5226afd0dc5ad3af2df9cec9cc71c43f86001237"
+      },
+      "outputs": {
+        "schematic": "schematic.json",
+        "pcb": "pcb.json",
+        "cross_analysis": "cross_analysis.json"
+      },
+      "scripts": {
+        "schematic": "analyze_schematic.py Sensor-Boi.kicad_sch"
+      },
+      "generated": "2026-07-01T16:04:52+02:00",
+      "pinned": false
+    }
+  }
+}
